@@ -8,6 +8,10 @@ import cloud.jgo.jjdom.dom.HTMLElements;
 import cloud.jgo.jjdom.dom.HTMLNode;
 import cloud.jgo.jjdom.dom.concrete.HTMLDefaultElement;
 public class HTMLMenuElement extends HTMLDefaultElement{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public HTMLMenuElement(HTMLDocument document) {
 		// TODO Auto-generated constructor stub
 		super("ul",document);
@@ -23,31 +27,31 @@ public class HTMLMenuElement extends HTMLDefaultElement{
 		return HTMLElementType.UL;
 	}
 	// inserisce una linea
-	public HTMLMenuElement appendMenuItem(String text){
+	public HTMLMenuElement appendMenuItem(String item){
 		HTMLElement li = JjDom.document.createElement(HTMLElementType.LI);
-		li.setTextContent(text);
+		li.setTextContent(item);
 		HTMLNode node = appendChild(li);
 		if (node!=null)return this;
 		else return null ;
 	}
 	public HTMLMenuElement appendMenuItems(String...items){
 		for (String item : items) {
-			appendMenuItem(item);
+			appendMenuItem("#", item);
 		}
 		return this ;
 	}
 	// inserisce un link nella linea del menu
-	public HTMLMenuElement appendMenuItem(String href,String text){
-		HTMLElement link = JjDom.document.createLink(href, text);
+	public HTMLMenuElement appendMenuItem(String href,String item){
+		HTMLElement link = JjDom.document.createLink(href, item);
 		HTMLElement li = JjDom.document.createElement(HTMLElementType.LI);
 		li.appendChild(link);
 		HTMLNode node = appendChild(li);
 		if (node!=null)return this ;
 		else return null ;
 	}
-	// questo metodo l'id lo mette al link
-	public HTMLMenuElement appendMenuItem(String href,String text,String id){
-		HTMLElement link = JjDom.document.createLink(href, text);
+	// questo metodo aggiunge l'id al link
+	public HTMLMenuElement appendMenuItem(String href,String item,String id){
+		HTMLElement link = JjDom.document.createLink(href, item);
 		link.setId(id);
 		HTMLElement li = JjDom.document.createElement(HTMLElementType.LI);
 		li.appendChild(link);
@@ -55,15 +59,41 @@ public class HTMLMenuElement extends HTMLDefaultElement{
 		if (node!=null)return this ;
 		else return null ;
 	}
+	
+	// aggiunge la classe al link
+	public HTMLMenuElement appendMenuItems(String className,String...items) {
+		for (String item : items) {
+			HTMLElement link = JjDom.document.createLink("#", item);
+			link.addClass(className);
+			HTMLElement li = JjDom.document.createElement(HTMLElementType.LI);
+			li.appendChild(link);
+			HTMLNode node = appendChild(li);
+		}
+		return this ;
+	}
+	
+	public HTMLMenuElement appendMenuItems(String linkClassName,String liClassName,String...items) {
+		for (String item : items) {
+			HTMLElement link = JjDom.document.createLink("#", item);
+			link.addClass(linkClassName);
+			HTMLElement li = JjDom.document.createElement(HTMLElementType.LI);
+			li.addClass(liClassName);
+			li.appendChild(link);
+			HTMLNode node = appendChild(li);
+		}
+		return this ;
+	}
+	
+	
 	// metodi per eliminare :
-	public boolean removeMenuItem(final String itemText){
+	public boolean removeMenuItem(final String item){
 		boolean deleted = false ;
 		HTMLElements li = $("li", 0);
 		for (HTMLElement htmlElement : li) {
 			if (li.getElementsByTag("a").element()!=null) {
 				// abbiamo un link che contiene il testo
 				HTMLElement link = li.getElementsByTag("a").element();
-				if (link.getTextContent().equals(itemText)) {
+				if (link.getTextContent().equals(item)) {
 					HTMLNode parent = htmlElement.getParentNode();
 					HTMLNode deletedNode = parent.removeNode(htmlElement);
 					if (deletedNode!=null) {
@@ -73,7 +103,7 @@ public class HTMLMenuElement extends HTMLDefaultElement{
 				}
 			}
 			else{
-				if (htmlElement.getTextContent().equals(itemText)) {
+				if (htmlElement.getTextContent().equals(item)) {
 					HTMLNode parent = htmlElement.getParentNode();
 					HTMLNode deletedNode = parent.removeNode(htmlElement);
 					if (deletedNode!=null) {
@@ -106,9 +136,14 @@ public class HTMLMenuElement extends HTMLDefaultElement{
 		}
 		return deleted ;
 	}
-	public boolean removeMenuItemsByClass(String...classes){
-		
-		return false ;
+	public HTMLMenuElement removeMenuItemsByClass(String...classes){
+		for (String clazz : classes) {
+			HTMLElements li = getElementsByClassName(clazz);
+			for (HTMLElement htmlElement : li) {
+				removeNode(htmlElement);
+			}
+		}
+		return this;
 	}
 	public HTMLMenuElement removeAllItems(){
 		$("li").each(new function() {

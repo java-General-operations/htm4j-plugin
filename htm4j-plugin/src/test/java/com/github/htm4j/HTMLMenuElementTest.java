@@ -18,28 +18,5 @@ public static void main(String[] args) {
 	
 	HTMLMenuElement menuElement = new HTMLMenuElement("nav",JjDom.document);
 	
-	
-	HTMLElement li,li2 = null ;
-	
-	li = JjDom.document.createElement(HTMLElementType.LI);
-	
-	li2 = JjDom.document.createElement(HTMLElementType.LI);
-	
-	li.setTextContent("Casa");
-	li.setId("home");
-	li2.setTextContent("Chi siamo");
-	
-	menuElement.appendChilds(li,li2);
-	JjDom.document.getBody().appendChild(menuElement);
-	
-	// ora applico il metodo removeMenuItemById()
-	
-	boolean deleted = menuElement.removeMenuItemById("home");
-	
-	System.out.println(deleted);
-	
-	System.out.println(JjDom.document.getMarkup());
-	
-	
 }
 }
