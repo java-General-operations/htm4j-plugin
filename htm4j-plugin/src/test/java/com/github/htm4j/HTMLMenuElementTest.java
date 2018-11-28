@@ -8,6 +8,7 @@ public class HTMLMenuElementTest {
 @SuppressWarnings("static-access")
 public static void main(String[] args) {
 	
+	// okok bene
 	
 	JjDom.newDocument().setMinimalTags().useDoctype(true).home().jqueryInit();
 	
@@ -38,6 +39,7 @@ public static void main(String[] args) {
 	System.out.println(deleted);
 	
 	System.out.println(JjDom.document.getMarkup());
+	
 	
 }
 }
